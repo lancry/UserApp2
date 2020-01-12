@@ -29,7 +29,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    List<String> l;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -52,65 +52,6 @@ public class HomeFragment extends Fragment {
 
 
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://senderapp-85057.firebaseio.com/");
-
-
-        DatabaseReference myRef = database.getReference("Members");
-
-         l = new ArrayList<String>();
-
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                // HashMap temp= dataSnapshot.getValue(HashMap.class);
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
-                    l.add(String.valueOf(snapshot.getKey()));
-
-
-                }
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_list_item_1, l);
-
-                final ListView l = root.findViewById(R.id.list);
-                l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view,
-                                            int position, long id) {
-
-                        // ListView Clicked item index
-                        int itemPosition     = position;
-
-                        // ListView Clicked item value
-                        String  itemValue    = (String) l.getItemAtPosition(position);
-
-                        // Show Alert
-                        Toast.makeText(getContext(),
-                                "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
-                                .show();
-
-                    }
-
-                });
-
-
-                l.setAdapter(adapter);
-
-                // ...
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-
-
-        myRef.addValueEventListener(postListener);
 
 
 
