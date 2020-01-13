@@ -2,6 +2,7 @@ package com.example.userapp2.ui.gallery;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class GalleryFragment extends Fragment {
 
     private GalleryViewModel galleryViewModel;
@@ -35,6 +38,9 @@ public class GalleryFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        l = new ArrayList<String>();
+
         galleryViewModel =
                 ViewModelProviders.of(this).get(GalleryViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_gallery, container, false);
@@ -54,7 +60,39 @@ public class GalleryFragment extends Fragment {
 
         DatabaseReference myRef = database.getReference("Members");
 
-        l = new ArrayList<String>();
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.getKey();
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                //Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+
+
+
+
+        //l.add("AAAAAAAAAAAAAAAAAAA");
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+        //        android.R.layout.simple_list_item_1, l);
+
+        //final ListView l = root.findViewById(R.id.list);
+        //l.setAdapter(adapter);
+
+
+
+
+
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -69,7 +107,7 @@ public class GalleryFragment extends Fragment {
 
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+               ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                         android.R.layout.simple_list_item_1, l);
 
                 final ListView l = root.findViewById(R.id.list);
@@ -85,12 +123,9 @@ public class GalleryFragment extends Fragment {
                         // ListView Clicked item value
                         String  itemValue    = (String) l.getItemAtPosition(position);
 
-                        /* Show Alert
-                        Toast.makeText(getContext(),
-                                "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
-                                .show();
 
-                         */
+
+
                         Intent intent= new Intent(getActivity(), FriendActivity.class);
                         intent.putExtra("FRIEND_NAME", itemValue);
                         startActivity(intent);
@@ -110,6 +145,9 @@ public class GalleryFragment extends Fragment {
 
             }
         };
+
+
+
 
 
         myRef.addValueEventListener(postListener);

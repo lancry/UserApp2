@@ -34,8 +34,6 @@ public class FriendActivity extends AppCompatActivity {
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://senderapp-85057.firebaseio.com/");
-
-
         DatabaseReference myRef = database.getReference("Members/" + name);
 
         l = new ArrayList<String>();
@@ -58,8 +56,8 @@ public class FriendActivity extends AppCompatActivity {
                         android.R.layout.simple_list_item_1, l);
 
 
-                final ListView l = (ListView) findViewById(R.id.friend_list);
-                l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                final ListView lv = (ListView) findViewById(R.id.friend_list);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
@@ -71,7 +69,7 @@ public class FriendActivity extends AppCompatActivity {
                 });
 
 
-                l.setAdapter(adapter);
+                lv.setAdapter(adapter);
 
                 // ...
             }
